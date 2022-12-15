@@ -23,12 +23,12 @@ function init(): void {
 }
 
 function animationFrame(time: DOMHighResTimeStamp) {
+	requestAnimationFrame(animationFrame)
+
 	if (!TileRenderer.tileTexture.IsLoaded) return
 
 	Graphics.clear()
 	TileRenderer.drawTiles(time)
-
-	requestAnimationFrame(animationFrame)
 }
 
 init()
