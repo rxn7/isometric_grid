@@ -6,6 +6,7 @@ export var InputUI;
     const columnsInput = document.getElementById('columns-input');
     const rowsInput = document.getElementById('rows-input');
     const animationSpeedInput = document.getElementById('animation-speed-input');
+    const animationAmplitudeInput = document.getElementById('animation-amplitude-input');
     const textureSelect = document.getElementById('texture-select');
     function init() {
         initTextureSelectOptions();
@@ -29,6 +30,7 @@ export var InputUI;
     columnsInput.addEventListener('change', onSizeInputChange);
     rowsInput.addEventListener('change', onSizeInputChange);
     animationSpeedInput.addEventListener('input', () => (TileRenderer.waveAnimationSpeed = parseFloat(animationSpeedInput.value)));
+    animationAmplitudeInput.addEventListener('input', () => (TileRenderer.waveAnimationAmplitude = parseFloat(animationAmplitudeInput.value)));
     textureSelect.addEventListener('change', () => {
         TileRenderer.tileTexture = new Texture(textureSelect.selectedOptions[0].value);
     });
