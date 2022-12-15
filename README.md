@@ -1,5 +1,5 @@
-[snake](.github/img/snake.png)
-[red](.github/img/red.png)
+![snake](.github/img/snake.png)
+![red](.github/img/red.png)
 
 # Features
 
