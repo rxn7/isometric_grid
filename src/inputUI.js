@@ -1,6 +1,6 @@
 import { StringHelper } from './helpers/stringHelper.js';
-import { Texture } from './texture.js';
 import { TileRenderer } from './tileRenderer.js';
+import { TileTextureDataLoader } from './tileTextureDataLoader.js';
 export var InputUI;
 (function (InputUI) {
     const columnsInput = document.getElementById('columns-input');
@@ -9,7 +9,6 @@ export var InputUI;
     const animationAmplitudeInput = document.getElementById('animation-amplitude-input');
     const textureSelect = document.getElementById('texture-select');
     function init() {
-        initTextureSelectOptions();
         onSizeInputChange();
     }
     InputUI.init = init;
@@ -18,20 +17,27 @@ export var InputUI;
         TileRenderer.rows = parseInt(rowsInput.value);
     }
     InputUI.onSizeInputChange = onSizeInputChange;
-    function initTextureSelectOptions() {
-        textureSelect.replaceChildren();
-        TileRenderer.texturePaths.forEach(path => {
-            const optionElement = document.createElement('option');
-            optionElement.value = path;
-            optionElement.text = StringHelper.stripExtension(StringHelper.basename(path));
-            textureSelect.appendChild(optionElement);
-        });
+    function addTextureSelectOption(textureData) {
+        const optionElement = document.createElement('option');
+        optionElement.value = textureData.path;
+        optionElement.style.backgroundColor = textureData.cssColor;
+        optionElement.text = StringHelper.stripExtension(StringHelper.basename(textureData.path));
+        textureSelect.appendChild(optionElement);
+    }
+    InputUI.addTextureSelectOption = addTextureSelectOption;
+    function selectTexture(idx) {
+        textureSelect.selectedIndex = idx;
+        onTextureSelect();
+    }
+    InputUI.selectTexture = selectTexture;
+    function onTextureSelect() {
+        const textureData = TileTextureDataLoader.textures[textureSelect.selectedIndex];
+        textureSelect.style.backgroundColor = textureData.cssColor;
+        TileRenderer.setTexture(textureData.image);
     }
     columnsInput.addEventListener('change', onSizeInputChange);
     rowsInput.addEventListener('change', onSizeInputChange);
     animationSpeedInput.addEventListener('input', () => (TileRenderer.waveAnimationSpeed = parseFloat(animationSpeedInput.value)));
     animationAmplitudeInput.addEventListener('input', () => (TileRenderer.waveAnimationAmplitude = parseFloat(animationAmplitudeInput.value)));
-    textureSelect.addEventListener('change', () => {
-        TileRenderer.tileTexture = new Texture(textureSelect.selectedOptions[0].value);
-    });
+    textureSelect.addEventListener('change', onTextureSelect);
 })(InputUI || (InputUI = {}));

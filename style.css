@@ -1,1 +1,1 @@
-body{margin:0;overflow:hidden;background-color:skyblue}#canvas{position:absolute;left:0;top:0;width:100vw;height:100vh;z-index:-100}
+@import 'https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap';body{font-family:source code pro,monospace;margin:0;overflow:hidden;background-color:skyblue}#ui-input-container{font-weight:700}#ui-input-container>input[type=number]{max-width:60px}#canvas{position:absolute;left:0;top:0;width:100vw;height:100vh;z-index:-100}
