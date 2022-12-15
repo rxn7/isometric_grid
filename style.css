@@ -1,1 +1,1 @@
-body {	margin: 0;	overflow: hidden;}#canvas-container {	position: absolute;	left: 0;	top: 0;	width: 100vw;	height: 100vh;}#canvas {	z-index: 1;}
+body{margin:0;overflow:hidden;background-color:skyblue}#canvas{position:absolute;left:0;top:0;width:100vw;height:100vh;z-index:-100}

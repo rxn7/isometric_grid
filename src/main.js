@@ -1,6 +1,7 @@
 import { Graphics } from './graphics.js';
-import { Tile } from './tile.js';
-function updateSize() {
+import { InputUI } from './inputUI.js';
+import { TileRenderer } from './tileRenderer.js';
+function onWindowResize() {
     const width = Math.trunc(window.visualViewport?.width || window.innerWidth);
     const height = Math.trunc(window.visualViewport?.height || window.innerHeight);
     Graphics.canvas.width = width;
@@ -8,15 +9,17 @@ function updateSize() {
     Graphics.ctx.imageSmoothingEnabled = false;
 }
 function init() {
-    updateSize();
+    Graphics.init();
+    InputUI.onSizeInputChange();
+    onWindowResize();
     requestAnimationFrame(animationFrame);
 }
 function animationFrame(time) {
-    if (!Tile.tileTexture.IsLoaded)
+    if (!TileRenderer.tileTexture.IsLoaded)
         return;
     Graphics.clear();
-    Tile.drawTiles(20, 20, time);
+    TileRenderer.drawTiles(time);
     requestAnimationFrame(animationFrame);
 }
 init();
-window.addEventListener('resize', updateSize);
+window.addEventListener('resize', onWindowResize);

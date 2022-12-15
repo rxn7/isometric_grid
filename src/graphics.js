@@ -8,8 +8,7 @@ export var Graphics;
     }
     Graphics.init = init;
     function clear() {
-        Graphics.ctx.fillStyle = `rgb(255, 255, 255)`;
-        Graphics.ctx.fillRect(0.0, 0.0, Graphics.canvas.clientWidth, Graphics.canvas.clientHeight);
+        Graphics.ctx.clearRect(0.0, 0.0, Graphics.canvas.clientWidth, Graphics.canvas.clientHeight);
     }
     Graphics.clear = clear;
 })(Graphics || (Graphics = {}));
