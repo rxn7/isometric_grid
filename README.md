@@ -1,3 +1,6 @@
+[snake](.github/img/snake.png)
+[red](.github/img/red.png)
+
 # Features
 
 - Customizable amount of columns and rows
