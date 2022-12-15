@@ -1,7 +1,9 @@
 import { Graphics } from './graphics.js'
-import { Tile } from './tile.js'
+import { InputUI } from './inputUI.js'
+import { Texture } from './texture.js'
+import { TileRenderer } from './tileRenderer.js'
 
-function updateSize(): void {
+function onWindowResize(): void {
 	const width: number = Math.trunc(window.visualViewport?.width || window.innerWidth)
 	const height: number = Math.trunc(window.visualViewport?.height || window.innerHeight)
 
@@ -12,18 +14,22 @@ function updateSize(): void {
 }
 
 function init(): void {
-	updateSize()
+	Graphics.init()
+
+	InputUI.onSizeInputChange()
+	onWindowResize()
+
 	requestAnimationFrame(animationFrame)
 }
 
 function animationFrame(time: DOMHighResTimeStamp) {
-	if (!Tile.tileTexture.IsLoaded) return
+	if (!TileRenderer.tileTexture.IsLoaded) return
 
 	Graphics.clear()
-	Tile.drawTiles(20, 20, time)
+	TileRenderer.drawTiles(time)
 
 	requestAnimationFrame(animationFrame)
 }
 
 init()
-window.addEventListener('resize', updateSize)
+window.addEventListener('resize', onWindowResize)

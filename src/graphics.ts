@@ -7,7 +7,6 @@ export namespace Graphics {
 	}
 
 	export function clear(): void {
-		ctx.fillStyle = `rgb(255, 255, 255)`
-		ctx.fillRect(0.0, 0.0, canvas.clientWidth, canvas.clientHeight)
+		ctx.clearRect(0.0, 0.0, canvas.clientWidth, canvas.clientHeight)
 	}
 }
