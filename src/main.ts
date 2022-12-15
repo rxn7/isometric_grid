@@ -1,7 +1,7 @@
 import { Graphics } from './graphics.js'
 import { InputUI } from './inputUI.js'
-import { Texture } from './texture.js'
 import { TileRenderer } from './tileRenderer.js'
+import { TileTextureDataLoader } from './tileTextureDataLoader.js'
 
 function onWindowResize(): void {
 	const width: number = Math.trunc(window.visualViewport?.width || window.innerWidth)
@@ -14,6 +14,7 @@ function onWindowResize(): void {
 }
 
 function init(): void {
+	TileTextureDataLoader.init()
 	InputUI.init()
 	Graphics.init()
 
@@ -24,10 +25,8 @@ function init(): void {
 
 function animationFrame(time: DOMHighResTimeStamp) {
 	requestAnimationFrame(animationFrame)
-
-	if (!TileRenderer.tileTexture.IsLoaded) return
-
 	Graphics.clear()
+
 	TileRenderer.drawTiles(time)
 }
 

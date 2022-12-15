@@ -1,10 +1,8 @@
 import { Graphics } from './graphics.js'
 import { Vector2 } from './math/vector2.js'
-import { Texture } from './texture.js'
 
 export namespace TileRenderer {
-	export const texturePaths: string[] = ['img/tiles/red.png', 'img/tiles/green.png', 'img/tiles/blue.png']
-	export let tileTexture: Texture = new Texture(texturePaths[0], onTextureLoad)
+	export let tileImage: HTMLImageElement
 	export let tileTextureSize: number
 	export let halfTileTextureSize: number
 	export let scale: number = 3
@@ -13,9 +11,10 @@ export namespace TileRenderer {
 	export let columns: number = 10
 	export let rows: number = 10
 
-	function onTextureLoad(): void {
-		tileTextureSize = tileTexture.image.width
+	export function setTexture(image: HTMLImageElement): void {
+		tileTextureSize = image.width
 		halfTileTextureSize = tileTextureSize * 0.5
+		tileImage = image
 	}
 
 	function gridToScreen(x: number, y: number): Vector2 {
@@ -26,6 +25,8 @@ export namespace TileRenderer {
 	}
 
 	export function drawTiles(time: DOMHighResTimeStamp): void {
+		if (!tileImage) return
+
 		const totalWidth = (columns * halfTileTextureSize + rows * -halfTileTextureSize - halfTileTextureSize) * scale
 		const totalHeight = (columns * 0.5 * halfTileTextureSize + rows * 0.5 * halfTileTextureSize) * scale
 
@@ -38,7 +39,7 @@ export namespace TileRenderer {
 			for (let j: number = 0; j < columns; ++j) {
 				const { x, y } = gridToScreen(i, j)
 				const animationOffset: number = waveAnimationSpeed === 0 ? 0 : Math.cos(time * waveAnimationSpeed * 0.01 + (j + i) * 0.5) * waveAnimationAmplitude
-				Graphics.ctx.drawImage(tileTexture.image, x * scale + centerOffset.x, (y + animationOffset) * scale + centerOffset.y, tileTextureSize * scale, tileTextureSize * scale)
+				Graphics.ctx.drawImage(tileImage, x * scale + centerOffset.x, (y + animationOffset) * scale + centerOffset.y, tileTextureSize * scale, tileTextureSize * scale)
 			}
 		}
 	}
@@ -47,4 +48,6 @@ export namespace TileRenderer {
 		if (ev.deltaY < 0) scale *= 1.1
 		else if (ev.deltaY > 0) scale *= 0.9
 	})
+
+	window.addEventListener('touchmove', (ev: TouchEvent) => {})
 }
