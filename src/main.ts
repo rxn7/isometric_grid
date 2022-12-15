@@ -14,9 +14,9 @@ function onWindowResize(): void {
 }
 
 function init(): void {
+	InputUI.init()
 	Graphics.init()
 
-	InputUI.onSizeInputChange()
 	onWindowResize()
 
 	requestAnimationFrame(animationFrame)

@@ -8,6 +8,11 @@ export namespace InputUI {
 	const animationSpeedInput: HTMLInputElement = document.getElementById('animation-speed-input') as HTMLInputElement
 	const textureSelect: HTMLSelectElement = document.getElementById('texture-select') as HTMLSelectElement
 
+	export function init() {
+		initTextureSelectOptions()
+		onSizeInputChange()
+	}
+
 	export function onSizeInputChange(): void {
 		TileRenderer.columns = parseInt(columnsInput.value)
 		TileRenderer.rows = parseInt(rowsInput.value)
@@ -29,6 +34,4 @@ export namespace InputUI {
 	textureSelect.addEventListener('change', () => {
 		TileRenderer.tileTexture = new Texture(textureSelect.selectedOptions[0].value)
 	})
-
-	initTextureSelectOptions()
 }
