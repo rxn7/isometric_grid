@@ -4,4 +4,4 @@
 
 ## Requirements
 
-- [minify](https://github.com/tdewolff/minify/tree/master/cmd/minify)
+- [minify](https://github.com/tdewolff/minify)
