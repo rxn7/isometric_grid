@@ -15,11 +15,11 @@ function init() {
     requestAnimationFrame(animationFrame);
 }
 function animationFrame(time) {
+    requestAnimationFrame(animationFrame);
     if (!TileRenderer.tileTexture.IsLoaded)
         return;
     Graphics.clear();
     TileRenderer.drawTiles(time);
-    requestAnimationFrame(animationFrame);
 }
 init();
 window.addEventListener('resize', onWindowResize);
