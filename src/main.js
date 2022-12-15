@@ -9,8 +9,8 @@ function onWindowResize() {
     Graphics.ctx.imageSmoothingEnabled = false;
 }
 function init() {
+    InputUI.init();
     Graphics.init();
-    InputUI.onSizeInputChange();
     onWindowResize();
     requestAnimationFrame(animationFrame);
 }
