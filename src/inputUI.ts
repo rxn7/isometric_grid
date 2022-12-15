@@ -6,6 +6,7 @@ export namespace InputUI {
 	const columnsInput: HTMLInputElement = document.getElementById('columns-input') as HTMLInputElement
 	const rowsInput: HTMLInputElement = document.getElementById('rows-input') as HTMLInputElement
 	const animationSpeedInput: HTMLInputElement = document.getElementById('animation-speed-input') as HTMLInputElement
+	const animationAmplitudeInput: HTMLInputElement = document.getElementById('animation-amplitude-input') as HTMLInputElement
 	const textureSelect: HTMLSelectElement = document.getElementById('texture-select') as HTMLSelectElement
 
 	export function init() {
@@ -31,6 +32,7 @@ export namespace InputUI {
 	columnsInput.addEventListener('change', onSizeInputChange)
 	rowsInput.addEventListener('change', onSizeInputChange)
 	animationSpeedInput.addEventListener('input', () => (TileRenderer.waveAnimationSpeed = parseFloat(animationSpeedInput.value)))
+	animationAmplitudeInput.addEventListener('input', () => (TileRenderer.waveAnimationAmplitude = parseFloat(animationAmplitudeInput.value)))
 	textureSelect.addEventListener('change', () => {
 		TileRenderer.tileTexture = new Texture(textureSelect.selectedOptions[0].value)
 	})
