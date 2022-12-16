@@ -19,11 +19,12 @@ function init(): void {
 	Graphics.init()
 
 	onWindowResize()
+	TileRenderer.updateScale()
 
 	requestAnimationFrame(animationFrame)
 }
 
-function animationFrame(time: DOMHighResTimeStamp) {
+function animationFrame(time: DOMHighResTimeStamp): void {
 	requestAnimationFrame(animationFrame)
 	Graphics.clear()
 

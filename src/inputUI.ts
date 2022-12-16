@@ -17,6 +17,7 @@ export namespace InputUI {
 	export function onSizeInputChange(): void {
 		TileRenderer.columns = parseInt(columnsInput.value)
 		TileRenderer.rows = parseInt(rowsInput.value)
+		TileRenderer.updateScale()
 	}
 
 	export function addTextureSelectOption(textureData: TileTextureData): void {

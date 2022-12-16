@@ -3,36 +3,43 @@ import { Vector2 } from './math/vector2.js'
 
 export namespace TileRenderer {
 	export let tileImage: HTMLImageElement
-	export let tileTextureSize: number
-	export let halfTileTextureSize: number
-	export let scale: number = 3
+
+	export const maxScale: number = 5
+	export const autoZoomScalePaddingPercentage: number = 0.1
+	export const tileTextureSize: number = 32
+	export const halfTileTextureSize: number = tileTextureSize * 0.5
+	export const quarterTileTextureSize: number = tileTextureSize * 0.25
+
+	export let scale: number = 1
 	export let waveAnimationSpeed: number = 1
 	export let waveAnimationAmplitude: number = 10
 	export let columns: number = 10
 	export let rows: number = 10
 
 	export function setTexture(image: HTMLImageElement): void {
-		tileTextureSize = image.width
-		halfTileTextureSize = tileTextureSize * 0.5
 		tileImage = image
 	}
 
 	function gridToScreen(x: number, y: number): Vector2 {
 		return {
 			x: x * halfTileTextureSize + y * -halfTileTextureSize - halfTileTextureSize,
-			y: x * 0.5 * halfTileTextureSize + y * 0.5 * halfTileTextureSize,
+			y: x * quarterTileTextureSize + y * quarterTileTextureSize - quarterTileTextureSize,
+		}
+	}
+
+	export function getTotalSize(): Vector2 {
+		return {
+			x: columns * halfTileTextureSize + rows * halfTileTextureSize,
+			y: columns * 0.5 * halfTileTextureSize + rows * 0.5 * halfTileTextureSize,
 		}
 	}
 
 	export function drawTiles(time: DOMHighResTimeStamp): void {
 		if (!tileImage) return
 
-		const totalWidth = (columns * halfTileTextureSize + rows * -halfTileTextureSize) * scale
-		const totalHeight = (columns * 0.5 * halfTileTextureSize + rows * 0.5 * halfTileTextureSize) * scale
-
 		const centerOffset: Vector2 = {
-			x: (Graphics.canvas.clientWidth + totalWidth) * 0.5,
-			y: (Graphics.canvas.clientHeight - totalHeight) * 0.5,
+			x: (Graphics.canvas.clientWidth + (columns * halfTileTextureSize + rows * -halfTileTextureSize) * scale) * 0.5,
+			y: (Graphics.canvas.clientHeight - (columns * 0.5 * halfTileTextureSize + rows * 0.5 * halfTileTextureSize) * scale) * 0.5,
 		}
 
 		for (let i: number = 0; i < rows; ++i) {
@@ -44,10 +51,20 @@ export namespace TileRenderer {
 		}
 	}
 
-	window.addEventListener('wheel', (ev: WheelEvent) => {
-		if (ev.deltaY < 0) scale *= 1.1
-		else if (ev.deltaY > 0) scale *= 0.9
-	})
+	export function updateScale(): void {
+		const totalSize: Vector2 = getTotalSize()
+		console.log(totalSize)
 
-	window.addEventListener('touchmove', (ev: TouchEvent) => {})
+		const fitPadding: number = 1.0 - autoZoomScalePaddingPercentage
+
+		if (Graphics.canvas.width - totalSize.x > Graphics.canvas.height - totalSize.y) {
+			const widthAspect: number = totalSize.x / Graphics.canvas.width
+			scale = (1 / widthAspect) * fitPadding
+		} else {
+			const heightAspect: number = totalSize.y / Graphics.canvas.height
+			scale = (1 / heightAspect) * fitPadding
+		}
+
+		if (scale > maxScale) scale = maxScale
+	}
 }
