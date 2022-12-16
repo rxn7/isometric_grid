@@ -38,7 +38,7 @@ export var TileRenderer;
         for (let i = 0; i < TileRenderer.rows; ++i) {
             for (let j = 0; j < TileRenderer.columns; ++j) {
                 const { x, y } = gridToScreen(i, j);
-                const animationOffset = TileRenderer.waveAnimationSpeed === 0 ? 0 : Math.cos(time * TileRenderer.waveAnimationSpeed * 0.01 + (j + i) * 0.5) * TileRenderer.waveAnimationAmplitude;
+                const animationOffset = TileRenderer.waveAnimationSpeed === 0 || TileRenderer.waveAnimationAmplitude ? 0 : Math.cos(time * TileRenderer.waveAnimationSpeed * 0.01 + (j + i) * 0.5) * TileRenderer.waveAnimationAmplitude;
                 Graphics.ctx.drawImage(TileRenderer.tileImage, x * TileRenderer.scale + centerOffset.x, (y + animationOffset) * TileRenderer.scale + centerOffset.y, TileRenderer.tileTextureSize * TileRenderer.scale, TileRenderer.tileTextureSize * TileRenderer.scale);
             }
         }
