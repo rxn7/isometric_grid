@@ -46,18 +46,18 @@ export var TileRenderer;
     TileRenderer.drawTiles = drawTiles;
     function updateScale() {
         const totalSize = getTotalSize();
-        console.log(totalSize);
-        const fitPadding = 1.0 - TileRenderer.autoZoomScalePaddingPercentage;
-        if (Graphics.canvas.width - totalSize.x > Graphics.canvas.height - totalSize.y) {
-            const widthAspect = totalSize.x / Graphics.canvas.width;
-            TileRenderer.scale = (1 / widthAspect) * fitPadding;
+        const widthAspect = totalSize.x / Graphics.canvas.width;
+        const heightAspect = totalSize.y / Graphics.canvas.height;
+        const fitPaddingMultiplier = 1.0 - TileRenderer.autoZoomScalePaddingPercentage;
+        if (widthAspect > heightAspect) {
+            TileRenderer.scale = (1 / widthAspect) * fitPaddingMultiplier;
         }
         else {
-            const heightAspect = totalSize.y / Graphics.canvas.height;
-            TileRenderer.scale = (1 / heightAspect) * fitPadding;
+            TileRenderer.scale = (1 / heightAspect) * fitPaddingMultiplier;
         }
         if (TileRenderer.scale > TileRenderer.maxScale)
             TileRenderer.scale = TileRenderer.maxScale;
     }
     TileRenderer.updateScale = updateScale;
+    window.addEventListener('resize', updateScale);
 })(TileRenderer || (TileRenderer = {}));
