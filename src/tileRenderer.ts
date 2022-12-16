@@ -53,16 +53,14 @@ export namespace TileRenderer {
 
 	export function updateScale(): void {
 		const totalSize: Vector2 = getTotalSize()
-		console.log(totalSize)
-
-		const fitPadding: number = 1.0 - autoZoomScalePaddingPercentage
 		const widthAspect: number = totalSize.x / Graphics.canvas.width
 		const heightAspect: number = totalSize.y / Graphics.canvas.height
+		const fitPaddingMultiplier: number = 1.0 - autoZoomScalePaddingPercentage
 
 		if (widthAspect > heightAspect) {
-			scale = (1 / widthAspect) * fitPadding
+			scale = (1 / widthAspect) * fitPaddingMultiplier
 		} else {
-			scale = (1 / heightAspect) * fitPadding
+			scale = (1 / heightAspect) * fitPaddingMultiplier
 		}
 
 		if (scale > maxScale) scale = maxScale
