@@ -15,6 +15,7 @@ export var InputUI;
     function onSizeInputChange() {
         TileRenderer.columns = parseInt(columnsInput.value);
         TileRenderer.rows = parseInt(rowsInput.value);
+        TileRenderer.updateScale();
     }
     InputUI.onSizeInputChange = onSizeInputChange;
     function addTextureSelectOption(textureData) {

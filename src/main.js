@@ -14,6 +14,7 @@ function init() {
     InputUI.init();
     Graphics.init();
     onWindowResize();
+    TileRenderer.updateScale();
     requestAnimationFrame(animationFrame);
 }
 function animationFrame(time) {
