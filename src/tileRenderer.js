@@ -21,7 +21,7 @@ export var TileRenderer;
     function drawTiles(time) {
         if (!TileRenderer.tileImage)
             return;
-        const totalWidth = (TileRenderer.columns * TileRenderer.halfTileTextureSize + TileRenderer.rows * -TileRenderer.halfTileTextureSize - TileRenderer.halfTileTextureSize) * TileRenderer.scale;
+        const totalWidth = (TileRenderer.columns * TileRenderer.halfTileTextureSize + TileRenderer.rows * -TileRenderer.halfTileTextureSize) * TileRenderer.scale;
         const totalHeight = (TileRenderer.columns * 0.5 * TileRenderer.halfTileTextureSize + TileRenderer.rows * 0.5 * TileRenderer.halfTileTextureSize) * TileRenderer.scale;
         const centerOffset = {
             x: (Graphics.canvas.clientWidth + totalWidth) * 0.5,
