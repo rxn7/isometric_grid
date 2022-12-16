@@ -27,7 +27,7 @@ export namespace TileRenderer {
 	export function drawTiles(time: DOMHighResTimeStamp): void {
 		if (!tileImage) return
 
-		const totalWidth = (columns * halfTileTextureSize + rows * -halfTileTextureSize - halfTileTextureSize) * scale
+		const totalWidth = (columns * halfTileTextureSize + rows * -halfTileTextureSize) * scale
 		const totalHeight = (columns * 0.5 * halfTileTextureSize + rows * 0.5 * halfTileTextureSize) * scale
 
 		const centerOffset: Vector2 = {
