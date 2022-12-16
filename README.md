@@ -9,7 +9,7 @@
 
 # To do
 
-- Automatic scale (always fit the entire map on the screen)
+- Multiple animations
 
 # Build
 

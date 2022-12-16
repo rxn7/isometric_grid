@@ -45,7 +45,7 @@ export namespace TileRenderer {
 		for (let i: number = 0; i < rows; ++i) {
 			for (let j: number = 0; j < columns; ++j) {
 				const { x, y } = gridToScreen(i, j)
-				const animationOffset: number = waveAnimationSpeed === 0 ? 0 : Math.cos(time * waveAnimationSpeed * 0.01 + (j + i) * 0.5) * waveAnimationAmplitude
+				const animationOffset: number = waveAnimationSpeed === 0 || waveAnimationAmplitude ? 0 : Math.cos(time * waveAnimationSpeed * 0.01 + (j + i) * 0.5) * waveAnimationAmplitude
 				Graphics.ctx.drawImage(tileImage, x * scale + centerOffset.x, (y + animationOffset) * scale + centerOffset.y, tileTextureSize * scale, tileTextureSize * scale)
 			}
 		}
