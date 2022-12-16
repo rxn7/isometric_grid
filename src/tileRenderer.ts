@@ -22,7 +22,7 @@ export namespace TileRenderer {
 
 	function gridToScreen(x: number, y: number): Vector2 {
 		return {
-			x: x * halfTileTextureSize + y * -halfTileTextureSize - halfTileTextureSize,
+			x: x * halfTileTextureSize - y * halfTileTextureSize - halfTileTextureSize,
 			y: x * quarterTileTextureSize + y * quarterTileTextureSize - quarterTileTextureSize,
 		}
 	}
@@ -30,7 +30,7 @@ export namespace TileRenderer {
 	export function getTotalSize(): Vector2 {
 		return {
 			x: columns * halfTileTextureSize + rows * halfTileTextureSize,
-			y: columns * 0.5 * halfTileTextureSize + rows * 0.5 * halfTileTextureSize,
+			y: columns * quarterTileTextureSize + rows * quarterTileTextureSize,
 		}
 	}
 
@@ -38,8 +38,8 @@ export namespace TileRenderer {
 		if (!tileImage) return
 
 		const centerOffset: Vector2 = {
-			x: (Graphics.canvas.clientWidth + (columns * halfTileTextureSize + rows * -halfTileTextureSize) * scale) * 0.5,
-			y: (Graphics.canvas.clientHeight - (columns * 0.5 * halfTileTextureSize + rows * 0.5 * halfTileTextureSize) * scale) * 0.5,
+			x: (Graphics.canvas.clientWidth + (columns * halfTileTextureSize - rows * halfTileTextureSize) * scale) * 0.5,
+			y: (Graphics.canvas.clientHeight - (columns * quarterTileTextureSize + rows * quarterTileTextureSize) * scale) * 0.5,
 		}
 
 		for (let i: number = 0; i < rows; ++i) {
