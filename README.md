@@ -9,7 +9,7 @@
 
 # To do
 
-- Zooming on mobile devices
+- Automatic scale (always fit the entire map on the screen)
 
 # Build
 
