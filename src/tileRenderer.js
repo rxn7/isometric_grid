@@ -17,14 +17,14 @@ export var TileRenderer;
     TileRenderer.setTexture = setTexture;
     function gridToScreen(x, y) {
         return {
-            x: x * TileRenderer.halfTileTextureSize + y * -TileRenderer.halfTileTextureSize - TileRenderer.halfTileTextureSize,
+            x: x * TileRenderer.halfTileTextureSize - y * TileRenderer.halfTileTextureSize - TileRenderer.halfTileTextureSize,
             y: x * TileRenderer.quarterTileTextureSize + y * TileRenderer.quarterTileTextureSize - TileRenderer.quarterTileTextureSize,
         };
     }
     function getTotalSize() {
         return {
             x: TileRenderer.columns * TileRenderer.halfTileTextureSize + TileRenderer.rows * TileRenderer.halfTileTextureSize,
-            y: TileRenderer.columns * 0.5 * TileRenderer.halfTileTextureSize + TileRenderer.rows * 0.5 * TileRenderer.halfTileTextureSize,
+            y: TileRenderer.columns * TileRenderer.quarterTileTextureSize + TileRenderer.rows * TileRenderer.quarterTileTextureSize,
         };
     }
     TileRenderer.getTotalSize = getTotalSize;
@@ -32,8 +32,8 @@ export var TileRenderer;
         if (!TileRenderer.tileImage)
             return;
         const centerOffset = {
-            x: (Graphics.canvas.clientWidth + (TileRenderer.columns * TileRenderer.halfTileTextureSize + TileRenderer.rows * -TileRenderer.halfTileTextureSize) * TileRenderer.scale) * 0.5,
-            y: (Graphics.canvas.clientHeight - (TileRenderer.columns * 0.5 * TileRenderer.halfTileTextureSize + TileRenderer.rows * 0.5 * TileRenderer.halfTileTextureSize) * TileRenderer.scale) * 0.5,
+            x: (Graphics.canvas.clientWidth + (TileRenderer.columns * TileRenderer.halfTileTextureSize - TileRenderer.rows * TileRenderer.halfTileTextureSize) * TileRenderer.scale) * 0.5,
+            y: (Graphics.canvas.clientHeight - (TileRenderer.columns * TileRenderer.quarterTileTextureSize + TileRenderer.rows * TileRenderer.quarterTileTextureSize) * TileRenderer.scale) * 0.5,
         };
         for (let i = 0; i < TileRenderer.rows; ++i) {
             for (let j = 0; j < TileRenderer.columns; ++j) {
