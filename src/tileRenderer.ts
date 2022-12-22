@@ -34,6 +34,12 @@ export namespace TileRenderer {
 		}
 	}
 
+	function calculateAnimationOffset(time: DOMHighResTimeStamp, i: number, j: number): number {
+		if (waveAnimationAmplitude === 0 || waveAnimationAmplitude === 0) return 0
+
+		return Math.cos(time * waveAnimationSpeed * 0.01 + (j + i) * 0.5) * waveAnimationAmplitude
+	}
+
 	export function drawTiles(time: DOMHighResTimeStamp): void {
 		if (!tileImage) return
 
@@ -45,7 +51,7 @@ export namespace TileRenderer {
 		for (let i: number = 0; i < rows; ++i) {
 			for (let j: number = 0; j < columns; ++j) {
 				const { x, y } = gridToScreen(i, j)
-				const animationOffset: number = waveAnimationSpeed === 0 || waveAnimationAmplitude ? 0 : Math.cos(time * waveAnimationSpeed * 0.01 + (j + i) * 0.5) * waveAnimationAmplitude
+				const animationOffset: number = calculateAnimationOffset(time, i, j)
 				Graphics.ctx.drawImage(tileImage, x * scale + centerOffset.x, (y + animationOffset) * scale + centerOffset.y, tileTextureSize * scale, tileTextureSize * scale)
 			}
 		}
