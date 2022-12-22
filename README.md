@@ -7,10 +7,6 @@
 - Multiple textures to choose from
 - Customizable animation
 
-# To do
-
-- Multiple animations
-
 # Build
 
 - Run `./build.sh`

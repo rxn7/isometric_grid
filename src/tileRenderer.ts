@@ -1,3 +1,4 @@
+import { AnimationType } from './animationType.js'
 import { Graphics } from './graphics.js'
 import { Vector2 } from './math/vector2.js'
 
@@ -11,8 +12,9 @@ export namespace TileRenderer {
 	export const quarterTileTextureSize: number = tileTextureSize * 0.25
 
 	export let scale: number = 1
-	export let waveAnimationSpeed: number = 1
-	export let waveAnimationAmplitude: number = 10
+	export let animationType: AnimationType = AnimationType.VERTICAL_WAVE
+	export let animationSpeed: number = 1
+	export let animationAmplitude: number = 10
 	export let columns: number = 10
 	export let rows: number = 10
 
@@ -34,10 +36,31 @@ export namespace TileRenderer {
 		}
 	}
 
-	function calculateAnimationOffset(time: DOMHighResTimeStamp, i: number, j: number): number {
-		if (waveAnimationAmplitude === 0 || waveAnimationAmplitude === 0) return 0
+	function getAnimationOffset(time: DOMHighResTimeStamp, i: number, j: number): Vector2 {
+		if (animationAmplitude === 0 || animationAmplitude === 0) return { x: 0, y: 0 }
 
-		return Math.cos(time * waveAnimationSpeed * 0.01 + (j + i) * 0.5) * waveAnimationAmplitude
+		switch (animationType) {
+			case AnimationType.VERTICAL_WAVE:
+				return {
+					x: 0,
+					y: Math.cos(time * animationSpeed * 0.01 + (j + i) * 0.5) * animationAmplitude,
+				}
+
+			case AnimationType.HORIZONTAL_WAVE:
+				return {
+					x: Math.cos(time * animationSpeed * 0.01 + (j + i) * 0.5) * animationAmplitude,
+					y: 0,
+				}
+
+			case AnimationType.SPIRAL:
+				return {
+					x: Math.cos(time * animationSpeed * 0.01 + (j + i) * 0.5) * animationAmplitude,
+					y: Math.sin(time * animationSpeed * 0.01 + (j + i) * 0.5) * animationAmplitude,
+				}
+
+			default:
+				return { x: 0, y: 0 }
+		}
 	}
 
 	export function drawTiles(time: DOMHighResTimeStamp): void {
@@ -51,8 +74,8 @@ export namespace TileRenderer {
 		for (let i: number = 0; i < rows; ++i) {
 			for (let j: number = 0; j < columns; ++j) {
 				const { x, y } = gridToScreen(i, j)
-				const animationOffset: number = calculateAnimationOffset(time, i, j)
-				Graphics.ctx.drawImage(tileImage, x * scale + centerOffset.x, (y + animationOffset) * scale + centerOffset.y, tileTextureSize * scale, tileTextureSize * scale)
+				const animationOffset: Vector2 = getAnimationOffset(time, i, j)
+				Graphics.ctx.drawImage(tileImage, (x + animationOffset.x) * scale + centerOffset.x, (y + animationOffset.y) * scale + centerOffset.y, tileTextureSize * scale, tileTextureSize * scale)
 			}
 		}
 	}
