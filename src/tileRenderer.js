@@ -1,3 +1,4 @@
+import { AnimationType } from './animationType.js';
 import { Graphics } from './graphics.js';
 export var TileRenderer;
 (function (TileRenderer) {
@@ -7,8 +8,9 @@ export var TileRenderer;
     TileRenderer.halfTileTextureSize = TileRenderer.tileTextureSize * 0.5;
     TileRenderer.quarterTileTextureSize = TileRenderer.tileTextureSize * 0.25;
     TileRenderer.scale = 1;
-    TileRenderer.waveAnimationSpeed = 1;
-    TileRenderer.waveAnimationAmplitude = 10;
+    TileRenderer.animationType = AnimationType.VERTICAL_WAVE;
+    TileRenderer.animationSpeed = 1;
+    TileRenderer.animationAmplitude = 10;
     TileRenderer.columns = 10;
     TileRenderer.rows = 10;
     function setTexture(image) {
@@ -28,10 +30,28 @@ export var TileRenderer;
         };
     }
     TileRenderer.getTotalSize = getTotalSize;
-    function calculateAnimationOffset(time, i, j) {
-        if (TileRenderer.waveAnimationAmplitude === 0 || TileRenderer.waveAnimationAmplitude === 0)
-            return 0;
-        return Math.cos(time * TileRenderer.waveAnimationSpeed * 0.01 + (j + i) * 0.5) * TileRenderer.waveAnimationAmplitude;
+    function getAnimationOffset(time, i, j) {
+        if (TileRenderer.animationAmplitude === 0 || TileRenderer.animationAmplitude === 0)
+            return { x: 0, y: 0 };
+        switch (TileRenderer.animationType) {
+            case AnimationType.VERTICAL_WAVE:
+                return {
+                    x: 0,
+                    y: Math.cos(time * TileRenderer.animationSpeed * 0.01 + (j + i) * 0.5) * TileRenderer.animationAmplitude,
+                };
+            case AnimationType.HORIZONTAL_WAVE:
+                return {
+                    x: Math.cos(time * TileRenderer.animationSpeed * 0.01 + (j + i) * 0.5) * TileRenderer.animationAmplitude,
+                    y: 0,
+                };
+            case AnimationType.SPIRAL:
+                return {
+                    x: Math.cos(time * TileRenderer.animationSpeed * 0.01 + (j + i) * 0.5) * TileRenderer.animationAmplitude,
+                    y: Math.sin(time * TileRenderer.animationSpeed * 0.01 + (j + i) * 0.5) * TileRenderer.animationAmplitude,
+                };
+            default:
+                return { x: 0, y: 0 };
+        }
     }
     function drawTiles(time) {
         if (!TileRenderer.tileImage)
@@ -43,8 +63,8 @@ export var TileRenderer;
         for (let i = 0; i < TileRenderer.rows; ++i) {
             for (let j = 0; j < TileRenderer.columns; ++j) {
                 const { x, y } = gridToScreen(i, j);
-                const animationOffset = calculateAnimationOffset(time, i, j);
-                Graphics.ctx.drawImage(TileRenderer.tileImage, x * TileRenderer.scale + centerOffset.x, (y + animationOffset) * TileRenderer.scale + centerOffset.y, TileRenderer.tileTextureSize * TileRenderer.scale, TileRenderer.tileTextureSize * TileRenderer.scale);
+                const animationOffset = getAnimationOffset(time, i, j);
+                Graphics.ctx.drawImage(TileRenderer.tileImage, (x + animationOffset.x) * TileRenderer.scale + centerOffset.x, (y + animationOffset.y) * TileRenderer.scale + centerOffset.y, TileRenderer.tileTextureSize * TileRenderer.scale, TileRenderer.tileTextureSize * TileRenderer.scale);
             }
         }
     }
