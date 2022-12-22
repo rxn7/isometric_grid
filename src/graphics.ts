@@ -4,10 +4,11 @@ export namespace Graphics {
 
 	export function init(): void {
 		if (!ctx) throw new Error('Failed to get canvas context')
+		ctx.save()
 	}
 
 	export function clear(): void {
 		ctx.fillStyle = 'skyblue'
-		ctx.fillRect(0.0, 0.0, canvas.clientWidth, canvas.clientHeight)
+		ctx.fillRect(0, 0, canvas.width, canvas.height)
 	}
 }

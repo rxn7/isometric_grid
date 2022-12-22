@@ -66,24 +66,25 @@ export namespace TileRenderer {
 	export function drawTiles(time: DOMHighResTimeStamp): void {
 		if (!tileImage) return
 
-		const centerOffset: Vector2 = {
-			x: (Graphics.canvas.clientWidth + (columns * halfTileTextureSize - rows * halfTileTextureSize) * scale) * 0.5,
-			y: (Graphics.canvas.clientHeight - (columns * quarterTileTextureSize + rows * quarterTileTextureSize) * scale) * 0.5,
-		}
+		Graphics.ctx.save()
+		Graphics.ctx.scale(scale, scale)
+		// Graphics.ctx.translate((columns * quarterTileTextureSize - rows * halfTileTextureSize) * 0.5, -(columns * quarterTileTextureSize + rows * quarterTileTextureSize) * 0.5)
 
 		for (let i: number = 0; i < rows; ++i) {
 			for (let j: number = 0; j < columns; ++j) {
 				const { x, y } = gridToScreen(i, j)
 				const animationOffset: Vector2 = getAnimationOffset(time, i, j)
-				Graphics.ctx.drawImage(tileImage, (x + animationOffset.x) * scale + centerOffset.x, (y + animationOffset.y) * scale + centerOffset.y, tileTextureSize * scale, tileTextureSize * scale)
+				Graphics.ctx.drawImage(tileImage, (x + animationOffset.x) | 0, (y + animationOffset.y) | 0)
 			}
 		}
+
+		Graphics.ctx.restore()
 	}
 
 	export function updateScale(): void {
 		const totalSize: Vector2 = getTotalSize()
-		const widthAspect: number = totalSize.x / Graphics.canvas.width
-		const heightAspect: number = totalSize.y / Graphics.canvas.height
+		const widthAspect: number = totalSize.x / window.innerWidth
+		const heightAspect: number = totalSize.y / window.innerHeight
 		const fitPaddingMultiplier: number = 1.0 - autoZoomScalePaddingPercentage
 
 		if (widthAspect > heightAspect) {
