@@ -28,6 +28,11 @@ export var TileRenderer;
         };
     }
     TileRenderer.getTotalSize = getTotalSize;
+    function calculateAnimationOffset(time, i, j) {
+        if (TileRenderer.waveAnimationAmplitude === 0 || TileRenderer.waveAnimationAmplitude === 0)
+            return 0;
+        return Math.cos(time * TileRenderer.waveAnimationSpeed * 0.01 + (j + i) * 0.5) * TileRenderer.waveAnimationAmplitude;
+    }
     function drawTiles(time) {
         if (!TileRenderer.tileImage)
             return;
@@ -38,7 +43,7 @@ export var TileRenderer;
         for (let i = 0; i < TileRenderer.rows; ++i) {
             for (let j = 0; j < TileRenderer.columns; ++j) {
                 const { x, y } = gridToScreen(i, j);
-                const animationOffset = TileRenderer.waveAnimationSpeed === 0 || TileRenderer.waveAnimationAmplitude ? 0 : Math.cos(time * TileRenderer.waveAnimationSpeed * 0.01 + (j + i) * 0.5) * TileRenderer.waveAnimationAmplitude;
+                const animationOffset = calculateAnimationOffset(time, i, j);
                 Graphics.ctx.drawImage(TileRenderer.tileImage, x * TileRenderer.scale + centerOffset.x, (y + animationOffset) * TileRenderer.scale + centerOffset.y, TileRenderer.tileTextureSize * TileRenderer.scale, TileRenderer.tileTextureSize * TileRenderer.scale);
             }
         }
