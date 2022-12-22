@@ -40,7 +40,9 @@ export namespace InputUI {
 	}
 
 	columnsInput.addEventListener('change', onSizeInputChange)
+	columnsInput.addEventListener('input', onSizeInputChange)
 	rowsInput.addEventListener('change', onSizeInputChange)
+	rowsInput.addEventListener('input', onSizeInputChange)
 	animationSpeedInput.addEventListener('input', () => (TileRenderer.waveAnimationSpeed = parseFloat(animationSpeedInput.value)))
 	animationAmplitudeInput.addEventListener('input', () => (TileRenderer.waveAnimationAmplitude = parseFloat(animationAmplitudeInput.value)))
 	textureSelect.addEventListener('change', onTextureSelect)
