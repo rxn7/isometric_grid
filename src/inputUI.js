@@ -18,7 +18,7 @@ export var InputUI;
     function onSizeInputChange() {
         TileRenderer.columns = parseInt(columnsInput.value);
         TileRenderer.rows = parseInt(rowsInput.value);
-        TileRenderer.updateScale();
+        TileRenderer.recalculateScale();
     }
     function initAnimationTypeSelect() {
         const animationCount = Object.keys(AnimationType).length;

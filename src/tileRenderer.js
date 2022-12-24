@@ -48,6 +48,11 @@ export var TileRenderer;
                     x: Math.cos(time * TileRenderer.animationSpeed * 0.01 + (j + i) * 0.5) * TileRenderer.animationAmplitude,
                     y: Math.sin(time * TileRenderer.animationSpeed * 0.01 + (j + i) * 0.5) * TileRenderer.animationAmplitude,
                 };
+            case AnimationType.SHAKE:
+                return {
+                    x: Math.sin(time * TileRenderer.animationSpeed * 0.01 + (j + 1) * (i + 1) * 0.5) * TileRenderer.animationAmplitude,
+                    y: Math.cos(time * TileRenderer.animationSpeed * 0.01 + (j + 1) * (i + 1) * 0.5) * TileRenderer.animationAmplitude,
+                };
             default:
                 return { x: 0, y: 0 };
         }
@@ -68,20 +73,18 @@ export var TileRenderer;
         Graphics.ctx.restore();
     }
     TileRenderer.drawTiles = drawTiles;
-    function updateScale() {
+    function recalculateScale() {
         const totalSize = getTotalSize();
         const widthAspect = totalSize.x / window.innerWidth;
         const heightAspect = totalSize.y / window.innerHeight;
         const fitPaddingMultiplier = 1.0 - TileRenderer.autoZoomScalePaddingPercentage;
-        if (widthAspect > heightAspect) {
+        if (widthAspect > heightAspect)
             TileRenderer.scale = (1 / widthAspect) * fitPaddingMultiplier;
-        }
-        else {
+        else
             TileRenderer.scale = (1 / heightAspect) * fitPaddingMultiplier;
-        }
         if (TileRenderer.scale > TileRenderer.maxScale)
             TileRenderer.scale = TileRenderer.maxScale;
     }
-    TileRenderer.updateScale = updateScale;
-    window.addEventListener('resize', updateScale);
+    TileRenderer.recalculateScale = recalculateScale;
+    window.addEventListener('resize', recalculateScale);
 })(TileRenderer || (TileRenderer = {}));
