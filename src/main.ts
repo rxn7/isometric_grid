@@ -19,7 +19,7 @@ function init(): void {
 	Graphics.init()
 
 	onWindowResize()
-	TileRenderer.updateScale()
+	TileRenderer.recalculateScale()
 
 	requestAnimationFrame(animationFrame)
 }

@@ -58,6 +58,12 @@ export namespace TileRenderer {
 					y: Math.sin(time * animationSpeed * 0.01 + (j + i) * 0.5) * animationAmplitude,
 				}
 
+			case AnimationType.SHAKE:
+				return {
+					x: Math.sin(time * animationSpeed * 0.01 + (j + 1) * (i + 1) * 0.5) * animationAmplitude,
+					y: Math.cos(time * animationSpeed * 0.01 + (j + 1) * (i + 1) * 0.5) * animationAmplitude,
+				}
+
 			default:
 				return { x: 0, y: 0 }
 		}
@@ -84,20 +90,17 @@ export namespace TileRenderer {
 		Graphics.ctx.restore()
 	}
 
-	export function updateScale(): void {
+	export function recalculateScale(): void {
 		const totalSize: Vector2 = getTotalSize()
 		const widthAspect: number = totalSize.x / window.innerWidth
 		const heightAspect: number = totalSize.y / window.innerHeight
 		const fitPaddingMultiplier: number = 1.0 - autoZoomScalePaddingPercentage
 
-		if (widthAspect > heightAspect) {
-			scale = (1 / widthAspect) * fitPaddingMultiplier
-		} else {
-			scale = (1 / heightAspect) * fitPaddingMultiplier
-		}
+		if (widthAspect > heightAspect) scale = (1 / widthAspect) * fitPaddingMultiplier
+		else scale = (1 / heightAspect) * fitPaddingMultiplier
 
 		if (scale > maxScale) scale = maxScale
 	}
 
-	window.addEventListener('resize', updateScale)
+	window.addEventListener('resize', recalculateScale)
 }

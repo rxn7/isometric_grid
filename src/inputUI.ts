@@ -20,7 +20,7 @@ export namespace InputUI {
 	function onSizeInputChange(): void {
 		TileRenderer.columns = parseInt(columnsInput.value)
 		TileRenderer.rows = parseInt(rowsInput.value)
-		TileRenderer.updateScale()
+		TileRenderer.recalculateScale()
 	}
 
 	function initAnimationTypeSelect(): void {
