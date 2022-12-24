@@ -22,14 +22,14 @@ export namespace TileRenderer {
 		tileImage = image
 	}
 
-	function gridToScreen(x: number, y: number): Vector2 {
+	function gridToScreen(i: number, j: number): Vector2 {
 		return {
-			x: x * halfTileTextureSize - y * halfTileTextureSize - halfTileTextureSize,
-			y: x * quarterTileTextureSize + y * quarterTileTextureSize - quarterTileTextureSize,
+			x: i * halfTileTextureSize - j * halfTileTextureSize - halfTileTextureSize,
+			y: i * quarterTileTextureSize + j * quarterTileTextureSize - quarterTileTextureSize,
 		}
 	}
 
-	export function getTotalSize(): Vector2 {
+	function getTotalSize(): Vector2 {
 		return {
 			x: columns * halfTileTextureSize + rows * halfTileTextureSize,
 			y: columns * quarterTileTextureSize + rows * quarterTileTextureSize,
@@ -37,7 +37,7 @@ export namespace TileRenderer {
 	}
 
 	function getAnimationOffset(time: DOMHighResTimeStamp, i: number, j: number): Vector2 {
-		if (animationAmplitude === 0 || animationAmplitude === 0) return { x: 0, y: 0 }
+		if (animationAmplitude === 0) return { x: 0, y: 0 }
 
 		switch (animationType) {
 			case AnimationType.VERTICAL_WAVE:
@@ -67,8 +67,11 @@ export namespace TileRenderer {
 		if (!tileImage) return
 
 		Graphics.ctx.save()
+		Graphics.ctx.translate(
+			(Graphics.canvas.clientWidth + (columns * halfTileTextureSize - rows * halfTileTextureSize) * scale) * 0.5,
+			(Graphics.canvas.clientHeight - (columns * quarterTileTextureSize + rows * quarterTileTextureSize) * scale) * 0.5
+		)
 		Graphics.ctx.scale(scale, scale)
-		// Graphics.ctx.translate((columns * quarterTileTextureSize - rows * halfTileTextureSize) * 0.5, -(columns * quarterTileTextureSize + rows * quarterTileTextureSize) * 0.5)
 
 		for (let i: number = 0; i < rows; ++i) {
 			for (let j: number = 0; j < columns; ++j) {
