@@ -8,10 +8,12 @@ body {
 }
 
 #ui-input-container {
+	user-select: none;
 	font-weight: bold;
 }
 
 #ui-input-container > input[type='number'] {
+	user-select: text !important;
 	max-width: 60px;
 }
 
