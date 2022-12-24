@@ -17,10 +17,10 @@ export var TileRenderer;
         TileRenderer.tileImage = image;
     }
     TileRenderer.setTexture = setTexture;
-    function gridToScreen(x, y) {
+    function gridToScreen(i, j) {
         return {
-            x: x * TileRenderer.halfTileTextureSize - y * TileRenderer.halfTileTextureSize - TileRenderer.halfTileTextureSize,
-            y: x * TileRenderer.quarterTileTextureSize + y * TileRenderer.quarterTileTextureSize - TileRenderer.quarterTileTextureSize,
+            x: i * TileRenderer.halfTileTextureSize - j * TileRenderer.halfTileTextureSize - TileRenderer.halfTileTextureSize,
+            y: i * TileRenderer.quarterTileTextureSize + j * TileRenderer.quarterTileTextureSize - TileRenderer.quarterTileTextureSize,
         };
     }
     function getTotalSize() {
@@ -29,9 +29,8 @@ export var TileRenderer;
             y: TileRenderer.columns * TileRenderer.quarterTileTextureSize + TileRenderer.rows * TileRenderer.quarterTileTextureSize,
         };
     }
-    TileRenderer.getTotalSize = getTotalSize;
     function getAnimationOffset(time, i, j) {
-        if (TileRenderer.animationAmplitude === 0 || TileRenderer.animationAmplitude === 0)
+        if (TileRenderer.animationAmplitude === 0)
             return { x: 0, y: 0 };
         switch (TileRenderer.animationType) {
             case AnimationType.VERTICAL_WAVE:
@@ -56,23 +55,23 @@ export var TileRenderer;
     function drawTiles(time) {
         if (!TileRenderer.tileImage)
             return;
-        const centerOffset = {
-            x: (Graphics.canvas.clientWidth + (TileRenderer.columns * TileRenderer.halfTileTextureSize - TileRenderer.rows * TileRenderer.halfTileTextureSize) * TileRenderer.scale) * 0.5,
-            y: (Graphics.canvas.clientHeight - (TileRenderer.columns * TileRenderer.quarterTileTextureSize + TileRenderer.rows * TileRenderer.quarterTileTextureSize) * TileRenderer.scale) * 0.5,
-        };
+        Graphics.ctx.save();
+        Graphics.ctx.translate((Graphics.canvas.clientWidth + (TileRenderer.columns * TileRenderer.halfTileTextureSize - TileRenderer.rows * TileRenderer.halfTileTextureSize) * TileRenderer.scale) * 0.5, (Graphics.canvas.clientHeight - (TileRenderer.columns * TileRenderer.quarterTileTextureSize + TileRenderer.rows * TileRenderer.quarterTileTextureSize) * TileRenderer.scale) * 0.5);
+        Graphics.ctx.scale(TileRenderer.scale, TileRenderer.scale);
         for (let i = 0; i < TileRenderer.rows; ++i) {
             for (let j = 0; j < TileRenderer.columns; ++j) {
                 const { x, y } = gridToScreen(i, j);
                 const animationOffset = getAnimationOffset(time, i, j);
-                Graphics.ctx.drawImage(TileRenderer.tileImage, (x + animationOffset.x) * TileRenderer.scale + centerOffset.x, (y + animationOffset.y) * TileRenderer.scale + centerOffset.y, TileRenderer.tileTextureSize * TileRenderer.scale, TileRenderer.tileTextureSize * TileRenderer.scale);
+                Graphics.ctx.drawImage(TileRenderer.tileImage, (x + animationOffset.x) | 0, (y + animationOffset.y) | 0);
             }
         }
+        Graphics.ctx.restore();
     }
     TileRenderer.drawTiles = drawTiles;
     function updateScale() {
         const totalSize = getTotalSize();
-        const widthAspect = totalSize.x / Graphics.canvas.width;
-        const heightAspect = totalSize.y / Graphics.canvas.height;
+        const widthAspect = totalSize.x / window.innerWidth;
+        const heightAspect = totalSize.y / window.innerHeight;
         const fitPaddingMultiplier = 1.0 - TileRenderer.autoZoomScalePaddingPercentage;
         if (widthAspect > heightAspect) {
             TileRenderer.scale = (1 / widthAspect) * fitPaddingMultiplier;
