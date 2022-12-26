@@ -1,35 +1,44 @@
-import { Graphics } from './graphics.js'
 import { InputUI } from './inputUI.js'
-import { TileRenderer } from './tileRenderer.js'
+import { Canvas2dRenderer } from './renderers/canvas2d/canvas2dRenderer.js'
+import { Renderer } from './renderers/renderer.js'
+import { WebGLRenderer } from './renderers/webgl/webglRenderer.js'
 import { TileTextureDataLoader } from './tileTextureDataLoader.js'
+
+export let renderer: Renderer
 
 function onWindowResize(): void {
 	const width: number = Math.trunc(window.visualViewport?.width || window.innerWidth)
 	const height: number = Math.trunc(window.visualViewport?.height || window.innerHeight)
 
-	Graphics.canvas.width = width
-	Graphics.canvas.height = height
+	Renderer.canvas.width = width
+	Renderer.canvas.height = height
 
-	Graphics.ctx.imageSmoothingEnabled = false
+	renderer.recalculateScale()
 }
 
 function init(): void {
 	TileTextureDataLoader.init()
+
+	try {
+		renderer = new WebGLRenderer()
+	} catch (err: any) {
+		console.error(`Falling back to Canvas2dRenderer, ${err}`)
+		renderer = new Canvas2dRenderer()
+	}
+
 	InputUI.init()
-	Graphics.init()
 
 	onWindowResize()
-	TileRenderer.recalculateScale()
 
 	requestAnimationFrame(animationFrame)
 }
 
 function animationFrame(time: DOMHighResTimeStamp): void {
-	requestAnimationFrame(animationFrame)
-	Graphics.clear()
+	renderer.clear()
+	renderer.render(time)
 
-	TileRenderer.drawTiles(time)
+	requestAnimationFrame(animationFrame)
 }
 
-init()
 window.addEventListener('resize', onWindowResize)
+init()
