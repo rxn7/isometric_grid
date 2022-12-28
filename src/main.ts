@@ -10,10 +10,7 @@ function onWindowResize(): void {
 	const width: number = Math.trunc(window.visualViewport?.width || window.innerWidth)
 	const height: number = Math.trunc(window.visualViewport?.height || window.innerHeight)
 
-	Renderer.canvas.width = width
-	Renderer.canvas.height = height
-
-	renderer.recalculateScale()
+	renderer.onResize(width, height)
 }
 
 function init(): void {

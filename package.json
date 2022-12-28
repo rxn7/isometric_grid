@@ -1,16 +1,15 @@
 {
-    "name": "isometric_grid",
-    "version": "1.0.0",
-    "description": "Isometric grid effect",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/rxn7/isometric_grid.git"
-    },
-    "keywords": [
-        "typescript"
-    ],
-    "author": "rxn7",
-    "license": "ISC",
-    "homepage": "https://github.com/rxn7/isometric_grid#readme"
+	"name": "isometric_grid",
+	"version": "1.0.0",
+	"description": "Isometric grid effect",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rxn7/isometric_grid.git"
+	},
+	"keywords": [
+		"typescript"
+	],
+	"author": "rxn7",
+	"license": "ISC",
+	"homepage": "https://github.com/rxn7/isometric_grid#readme"
 }
-

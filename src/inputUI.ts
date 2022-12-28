@@ -15,12 +15,7 @@ export namespace InputUI {
 	export function init() {
 		initAnimationTypeSelect()
 		onSizeInputChange()
-	}
-
-	function onSizeInputChange(): void {
-		renderer.columns = parseInt(columnsInput.value)
-		renderer.rows = parseInt(rowsInput.value)
-		renderer.recalculateScale()
+		onAnimationDataChange()
 	}
 
 	function initAnimationTypeSelect(): void {
@@ -32,7 +27,6 @@ export namespace InputUI {
 			animationTypeSelect.appendChild(optionElement)
 		}
 	}
-
 	export function addTextureSelectOption(textureData: TileTextureData): void {
 		const optionElement: HTMLOptionElement = document.createElement('option')
 		optionElement.value = textureData.path
@@ -46,24 +40,28 @@ export namespace InputUI {
 		onTextureSelect()
 	}
 
+	function onSizeInputChange(): void {
+		const columns: number = parseInt(columnsInput.value)
+		const rows: number = parseInt(rowsInput.value)
+		renderer.setColumnsAndRows(columns, rows)
+	}
+
 	function onTextureSelect(): void {
 		const textureData: TileTextureData = TileTextureDataLoader.textures[textureSelect.selectedIndex]
 		textureSelect.style.backgroundColor = textureData.cssColor
 		renderer.setTexture(textureData.image)
 	}
 
-	function onAnimationSelect(): void {
-		const animationTypeStr: string = Object.keys(AnimationType)[animationTypeSelect.selectedIndex] as string
-		const animationType: AnimationType = AnimationType[animationTypeStr as keyof typeof AnimationType]
-		renderer.animationType = animationType
+	function onAnimationDataChange(): void {
+		renderer.setAnimationData(parseFloat(animationSpeedInput.value), parseFloat(animationAmplitudeInput.value), animationTypeSelect.selectedIndex)
 	}
 
 	columnsInput.addEventListener('change', onSizeInputChange)
 	columnsInput.addEventListener('input', onSizeInputChange)
 	rowsInput.addEventListener('change', onSizeInputChange)
 	rowsInput.addEventListener('input', onSizeInputChange)
-	animationSpeedInput.addEventListener('input', () => (renderer.animationSpeed = parseFloat(animationSpeedInput.value)))
-	animationAmplitudeInput.addEventListener('input', () => (renderer.animationAmplitude = parseFloat(animationAmplitudeInput.value)))
+	animationSpeedInput.addEventListener('input', onAnimationDataChange)
+	animationAmplitudeInput.addEventListener('input', onAnimationDataChange)
+	animationTypeSelect.addEventListener('change', onAnimationDataChange)
 	textureSelect.addEventListener('change', onTextureSelect)
-	animationTypeSelect.addEventListener('change', onAnimationSelect)
 }
