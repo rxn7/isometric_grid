@@ -17,6 +17,7 @@ function init(): void {
 	TileTextureDataLoader.init()
 
 	try {
+		// renderer = new Canvas2dRenderer()
 		renderer = new WebGLRenderer()
 	} catch (err: any) {
 		console.error(`Falling back to Canvas2dRenderer, ${err}`)

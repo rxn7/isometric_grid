@@ -66,8 +66,8 @@ const isometricGridVertexShader: string = /*glsl*/ `#version 300 es
             animationOffset = shakeAnimationOffset(i, j);
 
         vec2 position = vec2(
-            uScale * (float(-i) * halfTileTextureSize - float(-j) * halfTileTextureSize - halfTileTextureSize + animationOffset.x + aPos.x),
-            uScale * (float(-i) * quarterTileTextureSize + float(-j) * quarterTileTextureSize - quarterTileTextureSize + animationOffset.y + aPos.y)
+            float(-i) * halfTileTextureSize - float(-j) * halfTileTextureSize - halfTileTextureSize + animationOffset.x + aPos.x,
+            float(-i) * quarterTileTextureSize + float(-j) * quarterTileTextureSize - quarterTileTextureSize + animationOffset.y + aPos.y
         );
 
         gl_Position = uProjectionMatrix * vec4(position, 0.0, 1.0);

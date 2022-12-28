@@ -1,7 +1,6 @@
 import { Camera } from './camera.js'
 import { Renderer } from '../renderer.js'
 import { IsometricGridShaderProgram } from './shaders/isometricGridShader.js'
-import { Matrix4 } from '../../math/matrix4.js'
 
 export class WebGLRenderer extends Renderer {
 	private gl: WebGL2RenderingContext
@@ -37,10 +36,10 @@ export class WebGLRenderer extends Renderer {
 	private setupBuffer(): void {
 		// prettier-ignore
 		const vertices: Float32Array = new Float32Array([
-			-16, 16, 0, 1,
-			-16, -16, 0, 0,
-			16, -16, 1, 0,
-			16, 16, 1, 1
+			-Renderer.halfTileTextureSize, Renderer.halfTileTextureSize, 0, 1,
+			-Renderer.halfTileTextureSize, -Renderer.halfTileTextureSize, 0, 0,
+			Renderer.halfTileTextureSize, -Renderer.halfTileTextureSize, 1, 0,
+			Renderer.halfTileTextureSize, Renderer.halfTileTextureSize, 1, 1
 		])
 		const indices: Uint8Array = new Uint8Array([3, 2, 1, 3, 1, 0])
 
@@ -75,21 +74,20 @@ export class WebGLRenderer extends Renderer {
 		this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture)
 		this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image)
 		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST)
-		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST)
+		this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST_MIPMAP_NEAREST)
+		this.gl.generateMipmap(this.gl.TEXTURE_2D)
 	}
 
 	public override onResize(width: number, height: number): void {
 		super.onResize(width, height)
-
 		this.gl.viewport(0, 0, width, height)
-
-		this.camera.recalculate(this.scale, width, height)
-		this.gl.uniformMatrix4fv(this.shader.uniforms.projection, false, this.camera.getProjectionMatrixValues())
 	}
 
 	public override recalculateScale(): void {
 		super.recalculateScale()
 		this.gl.uniform1f(this.shader.uniforms.scale, this.scale)
+		this.camera.recalculate(this.scale, this.canvas.width, this.canvas.height)
+		this.gl.uniformMatrix4fv(this.shader.uniforms.projection, false, this.camera.getProjectionMatrixValues())
 	}
 
 	public override setColumnsAndRows(rows: number, columns: number): void {
